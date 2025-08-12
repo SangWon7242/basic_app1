@@ -16,10 +16,9 @@ import java.io.IOException;
 public class FileUploadController {
   @RequestMapping("")
   @ResponseBody
-  public String upload(@RequestParam("img1") MultipartFile file) {
+  public String upload(@RequestParam("img1") MultipartFile img1, @RequestParam("img2") MultipartFile img2) {
     // 저장 경로 설정
     String uploadDir = "c:/spring-temp/app1";
-    String fileName = "1.png";
 
     // 디렉토리 생성
     File dir = new File(uploadDir);
@@ -28,12 +27,10 @@ public class FileUploadController {
       dir.mkdirs(); // 디렉토리생성
     }
 
-    // 파일 저장
-    File testFile = new File(dir, fileName);
-
     try {
-      file.transferTo(testFile); // 파일 저장
-      return "파일 업로드 완료 : " + testFile.getAbsolutePath(); // getAbsolutePath : 파일 전체 경로
+      img1.transferTo(new File(dir, "1.png"));
+      img2.transferTo(new File(dir, "2.png"));
+      return "파일 업로드 완료";
     } catch (IOException e) {
       e.printStackTrace();
       return "파일 업로드 실행 : " + e.getMessage();
