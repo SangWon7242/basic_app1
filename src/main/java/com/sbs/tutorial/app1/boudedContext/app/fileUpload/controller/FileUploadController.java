@@ -1,6 +1,7 @@
 package com.sbs.tutorial.app1.boudedContext.app.fileUpload.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,14 +15,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/upload")
 public class FileUploadController {
+  @Value("${custom.genFileDirPath}") // 설정 파일을 가져온다.
+  private String genFileDirPath;
+
   @RequestMapping("")
   @ResponseBody
   public String upload(@RequestParam("img1") MultipartFile img1, @RequestParam("img2") MultipartFile img2) {
-    // 저장 경로 설정
-    String uploadDir = "c:/spring-temp/app1";
 
-    // 디렉토리 생성
-    File dir = new File(uploadDir);
+    File dir = new File(genFileDirPath);
 
     if (!dir.exists()) { // 디렉토리 존재 여부 확인
       dir.mkdirs(); // 디렉토리생성
