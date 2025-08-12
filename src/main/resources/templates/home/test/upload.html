@@ -1,0 +1,13 @@
+<h1>파일 업로드 테스트</h1>
+
+<!-- 폼으로 파일 업로드시 필수 : <form th:action="@{/upload}" method="POST" enctype="multipart/form-data"> -->
+<form th:action="@{/upload}" method="POST" enctype="multipart/form-data">
+  <div>
+    <span>파일 1</span>
+    <input type="file" name="img1" accept="image/png, image/jpeg, image/jpg, image/gif">
+  </div>
+  <div>
+    <span>업로드</span>
+    <input type="submit" value="업로드">
+  </div>
+</form>
