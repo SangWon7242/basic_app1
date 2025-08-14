@@ -56,7 +56,7 @@ public class MemberController {
 
   @PreAuthorize("isAuthenticated()") // 로그인 회원만 접속이 가능
   @GetMapping("/profile")
-  public String showProfile(Principal principal, HttpSession session, Model model) {
+  public String showProfile(Principal principal, Model model) {
     Member loginedMember = memberService.getMemberByUsername(principal.getName());
 
     model.addAttribute("loginedMember", loginedMember);

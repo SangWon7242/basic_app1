@@ -31,8 +31,9 @@ public class SecurityConfig {
   }
 
   @Bean
-    // 스프링 시큐리티 인증을 처리
-    // 커스텀 인증 로직을 구현할 때 필요
+  // 스프링 시큐리티 인증을 처리
+  // 커스텀 인증 로직을 구현할 때 필요
+  // 인증의 핵심 관리자
   AuthenticationManager authenticationManager(
       AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
