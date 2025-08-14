@@ -88,4 +88,19 @@ class App1ApplicationTests {
         .andExpect(handler().methodName("showProfile"))
         .andExpect(content().string(containsString("user4@test.com")));
   }
+
+  @Test
+  @DisplayName("회원가입")
+  void t05() throws Exception {
+    // 과제(제출) : 월요일 저녁 10:00 시까지 제출
+    // 강사 이메일(수업페이지 참고)
+    
+    // 파일 다운로드 수행(실제 이미지 url 업로드 / Lorem Picsum 이용)
+    
+    // 회원 가입(MVC MOCK)
+    
+    // 5번 회원이 생성, 테스트(생성 된 회원 다운로드한 파일을 프로필에 업로드)
+    
+    // DB에 프로필 이미지가 있는지 확인
+  }
 }
