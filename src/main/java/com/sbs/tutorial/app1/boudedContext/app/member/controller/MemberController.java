@@ -5,6 +5,7 @@ import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class MemberController {
   }
 
   @GetMapping("/profile")
-  public String showProfile(HttpSession session) {
+  public String showProfile(HttpSession session, Model model) {
     Long loginedMemberId = (Long) session.getAttribute("loginedMemberId");
 
     boolean isLogined = loginedMemberId != null;
@@ -47,6 +48,10 @@ public class MemberController {
     if(!isLogined) {
       return "redirect:/?errorMsg=NeedLogin";
     }
+
+    Member loginedMember = memberService.getMemberById(loginedMemberId);
+
+    model.addAttribute("loginedMember", loginedMember);
 
     return "member/profile";
   }
