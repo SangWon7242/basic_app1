@@ -15,8 +15,8 @@ public class DevDataInit {
 
     return args -> {
       String password = passwordEncoder.encode("1234");
-      memberService.join("user1", password, "user1@localhost");
-      memberService.join("user2", password, "user2@localhost");
+      memberService.join("user1", password, "user1@test.com");
+      memberService.join("user2", password, "user2@test.com");
     };
   }
 }
