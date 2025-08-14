@@ -54,4 +54,16 @@ class App1ApplicationTests {
     long count = memberService.count();
     assertThat(count).isGreaterThan(0);
   }
+
+  @Test
+  @DisplayName("user1로 로그인 후 프로필 페이지에 접속하면 user1의 이메일이 보여야 한다.")
+  void t03() throws Exception {
+
+  }
+
+  @Test
+  @DisplayName("user4로 로그인 후 프로필 페이지에 접속하면 user4의 이메일이 보여야 한다.")
+  void t04() throws Exception {
+
+  }
 }
