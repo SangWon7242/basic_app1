@@ -2,6 +2,7 @@ package com.sbs.tutorial.app1.boudedContext.app.member.controller;
 
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +23,32 @@ public class MemberController {
   }
 
   @PostMapping("/join")
-  @ResponseBody
-  public String join(String username, String password, String email, MultipartFile profileImg) {
+  public String join(String username, String password, String email, MultipartFile profileImg, HttpSession session) {
     Member oldMember = memberService.getMemberByUsername(username);
 
     if(oldMember != null) {
-      return "이미 가입된 회원입니다.";
+      return "redirect:/?errorMsg=AlreadyExist";
     }
     
     // {noop} : 암호화 되지 않은 비밀번호의 경우 noop을 이용하여 저장
     Member member = memberService.join(username, "{noop}" + password, email, profileImg);
 
-    return "가입완료";
+    session.setAttribute("loginedMemberId", member.getId());
+
+    return "redirect:/member/profile";
   }
+
+  @GetMapping("/profile")
+  public String showProfile(HttpSession session) {
+    Long loginedMemberId = (Long) session.getAttribute("loginedMemberId");
+
+    boolean isLogined = loginedMemberId != null;
+
+    if(!isLogined) {
+      return "redirect:/?errorMsg=NeedLogin";
+    }
+
+    return "member/profile";
+  }
+
 }
