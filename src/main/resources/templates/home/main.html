@@ -1,3 +1,57 @@
-<div>안녕</div>
+<style>
+  body, ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-<div th:text="${param.errorMsg}"></div>
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .top-bar {
+    background-color: #333;
+    color: #fff;
+    height: 80px;
+  }
+
+  .top-bar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 50px;
+  }
+
+  .top-bar__menu-list {
+    display: flex;
+    gap: 0 30px;
+  }
+</style>
+
+<header class="top-bar">
+  <div class="container">
+    <div class="logo-box">
+      <a href="/" class="logo">
+        Spring Boot APP
+      </a>
+    </div>
+    <nav class="top-bar__menu">
+      <ul class="top-bar__menu-list">
+        <li sec:authorize="!isAuthenticated()">
+          <a href="/member/login">로그인</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <span>안녕하세요. <span sec:authentication="name"></span>님!</span>
+        </li>
+        <li sec:authorize="!isAuthenticated()">
+          <a href="/member/join">회원가입</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a href="/member/profile">마이페이지</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
