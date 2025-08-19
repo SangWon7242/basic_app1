@@ -145,5 +145,7 @@ class App1ApplicationTests {
     assertThat(newMember).isNotNull();
     assertThat(newMember.getUsername()).isEqualTo("user5");
     assertThat(newMember.getEmail()).isEqualTo("user5@test.com");
+
+    memberService.removeProfileImg(newMember);
   }
 }

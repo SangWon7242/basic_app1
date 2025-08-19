@@ -94,4 +94,13 @@ public class MemberService implements UserDetailsService {
   public long count() {
     return memberRepository.count();
   }
+
+  public void removeProfileImg(Member member) {
+    if(member.getProfileImg() == null || member.getProfileImg().isEmpty()) return;
+
+    String profileImgPath = genFileDirPath + "/" + member.getProfileImg();
+    File file = new File(profileImgPath);
+
+    if(file.exists()) file.delete();
+  }
 }
