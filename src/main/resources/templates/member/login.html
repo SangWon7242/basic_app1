@@ -1,4 +1,9 @@
-<h1>로그인</h1>
+<!doctype html>
+<html layout:decorate="~{layout/layout.html}">
+<head>
+  <title>로그인</title>
+</head>
+<body>
 
 <script>
   function LoginForm__submit(form) {
@@ -20,17 +25,23 @@
   }
 </script>
 
-<form th:action method="POST" enctype="multipart/form-data" onsubmit="LoginForm__submit(this); return false;">
-  <div>
-    <span>아이디</span>
-    <input type="text" name="username">
-  </div>
-  <div>
-    <span>비밀번호</span>
-    <input type="password" name="password">
-  </div>
+<section layout:fragment="content">
+  <div class="container mx-auto">
+    <form th:action method="POST" enctype="multipart/form-data" onsubmit="LoginForm__submit(this); return false;">
+      <div>
+        <span>아이디</span>
+        <input type="text" name="username">
+      </div>
+      <div>
+        <span>비밀번호</span>
+        <input type="password" name="password">
+      </div>
 
-  <div>
-    <input type="submit" value="로그인">
+      <div>
+        <input type="submit" value="로그인">
+      </div>
+    </form>
   </div>
-</form>
+</section>
+</body>
+</html>

@@ -1,75 +1,14 @@
-<style>
-  body, ul, li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
+<!doctype html>
+<html layout:decorate="~{layout/layout.html}">
+<head>
+  <title>메인 페이지</title>
+</head>
 
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .top-bar {
-    background-color: #333;
-    color: #fff;
-    height: 80px;
-  }
-
-  .top-bar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    padding: 0 50px;
-  }
-
-  .top-bar__menu-list {
-    display: flex;
-    align-items: center;
-    gap: 0 30px;
-  }
-
-  .profile-box {
-    display: flex;
-    gap: 0 10px;
-    align-items: center;
-  }
-
-  .profile-img {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-</style>
-
-<header class="top-bar">
-  <div class="container">
-    <div class="logo-box">
-      <a href="/" class="logo">
-        Spring Boot APP
-      </a>
+<body>
+  <section layout:fragment="content">
+    <div class="container">
+      메인 페이지
     </div>
-    <nav class="top-bar__menu">
-      <ul class="top-bar__menu-list">
-        <li sec:authorize="!isAuthenticated()">
-          <a href="/member/login">로그인</a>
-        </li>
-        <!-- isAuthenticated : 로그인 한 경우 -->
-        <li sec:authorize="isAuthenticated()">
-          <div class="profile-box">
-            <img class="profile-img" th:src="@{|${loginedMemberProfileImgUrl}|}" alt="프로필 이미지">
-            <span>안녕하세요. <span th:text="${loginedMember.username}"></span>님!</span>
-          </div>
-        </li>
-        <li sec:authorize="!isAuthenticated()">
-          <a href="/member/join">회원가입</a>
-        </li>
-        <li sec:authorize="isAuthenticated()">
-          <a href="/member/profile">마이페이지</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
+  </section>
+</body>
+</html>

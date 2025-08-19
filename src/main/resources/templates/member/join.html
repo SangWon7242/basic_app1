@@ -1,5 +1,9 @@
-<h1>회원가입</h1>
-
+<!doctype html>
+<html layout:decorate="~{layout/layout.html}">
+<head>
+  <title>회원 가입</title>
+</head>
+<body>
 <script>
   function JoinForm__submit(form) {
     form.username.value = form.username.value.trim();
@@ -42,30 +46,36 @@
   }
 </script>
 
-<form th:action method="POST" enctype="multipart/form-data" onsubmit="JoinForm__submit(this); return false;">
-  <div>
-    <span>아이디</span>
-    <input type="text" name="username">
+<section layout:fragment="content">
+  <div class="container mx-auto">
+    <form th:action method="POST" enctype="multipart/form-data" onsubmit="JoinForm__submit(this); return false;">
+      <div>
+        <span>아이디</span>
+        <input type="text" name="username">
+      </div>
+      <div>
+        <span>비밀번호</span>
+        <input type="password" name="password">
+      </div>
+      <div>
+        <span>비밀번호 확인</span>
+        <input type="password" name="passwordConfirm">
+      </div>
+      <div>
+        <span>이메일</span>
+        <input type="email" name="email">
+      </div>
+      <div>
+        <div>
+          <span>프로필 이미지</span>
+        </div>
+        <input type="file" name="profileImg" accept="image/png, image/jpeg, image/jpg, image/gif">
+      </div>
+      <div>
+        <input type="submit" value="회원가입">
+      </div>
+    </form>
   </div>
-  <div>
-    <span>비밀번호</span>
-    <input type="password" name="password">
-  </div>
-  <div>
-    <span>비밀번호 확인</span>
-    <input type="password" name="passwordConfirm">
-  </div>
-  <div>
-    <span>이메일</span>
-    <input type="email" name="email">
-  </div>
-  <div>
-    <div>
-      <span>프로필 이미지</span>
-    </div>
-    <input type="file" name="profileImg" accept="image/png, image/jpeg, image/jpg, image/gif">
-  </div>
-  <div>
-    <input type="submit" value="회원가입">
-  </div>
-</form>
+</section>
+</body>
+</html>
