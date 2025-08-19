@@ -54,6 +54,11 @@ public class MemberController {
     return "redirect:/member/profile";
   }
 
+  @GetMapping("/login")
+  public String showLogin() {
+    return "member/login";
+  }
+
   @PreAuthorize("isAuthenticated()") // 로그인 회원만 접속이 가능
   @GetMapping("/profile")
   public String showProfile(Principal principal, Model model) {
