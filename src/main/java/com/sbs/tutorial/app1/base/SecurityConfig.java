@@ -19,7 +19,14 @@ public class SecurityConfig {
     http
         .csrf(csrf -> csrf.ignoringRequestMatchers("/**")) // csrf 허용
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/member/join").permitAll()
             .anyRequest().permitAll() // 모든 요청 허용
+            
+        ).formLogin(form -> form
+            .loginPage("/member/login") // GET : 로그인 페이지
+            .loginProcessingUrl("/member/login") // POST : 로그인 처리
+            .defaultSuccessUrl("/member/profile") // 로그인 성공시 리다이렉트
+            .permitAll()
         );
 
     return http.build();
