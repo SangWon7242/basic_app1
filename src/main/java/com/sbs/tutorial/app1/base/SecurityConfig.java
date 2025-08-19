@@ -27,7 +27,13 @@ public class SecurityConfig {
             .loginProcessingUrl("/member/login") // POST : 로그인 처리
             .defaultSuccessUrl("/member/profile") // 로그인 성공시 리다이렉트
             .permitAll()
-        );
+        ).logout(logout -> logout
+            .logoutUrl("/member/logout") // POST : 로그아웃
+            .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트
+            .invalidateHttpSession(true) // 세션 삭제
+            .deleteCookies("JSESSIONID")
+            .clearAuthentication(true) // 인증 삭제
+            .permitAll());
 
     return http.build();
   }

@@ -80,6 +80,10 @@
               <span>안녕하세요. <span th:text="${loginedMember.username}"></span>님!</span>
             </div>
           </li>
+          <li sec:authorize="isAuthenticated()">
+            <a onclick="this.nextElementSibling.submit()" class="cursor-pointer">로그아웃</a>
+            <form th:action="@{/member/logout}" method="POST" hidden></form>
+          </li>
           <li sec:authorize="isAnonymous()">
             <a href="/member/join">회원가입</a>
           </li>
