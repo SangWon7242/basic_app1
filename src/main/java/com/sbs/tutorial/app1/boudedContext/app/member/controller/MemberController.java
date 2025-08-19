@@ -27,11 +27,13 @@ public class MemberController {
   private final MemberService memberService;
   private final PasswordEncoder passwordEncoder;
 
+  @PreAuthorize("isAnonymous()") // 로그인 하지 않은 회원만 접속 가능
   @GetMapping("/join")
   public String showJoin() {
     return "member/join";
   }
 
+  @PreAuthorize("isAnonymous()")
   @PostMapping("/join")
   public String join(String username, String password, String email, MultipartFile profileImg, HttpServletRequest req) {
     Member oldMember = memberService.getMemberByUsername(username);
@@ -54,6 +56,7 @@ public class MemberController {
     return "redirect:/member/profile";
   }
 
+  @PreAuthorize("isAnonymous()")
   @GetMapping("/login")
   public String showLogin() {
     return "member/login";
@@ -62,6 +65,11 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()") // 로그인 회원만 접속이 가능
   @GetMapping("/profile")
   public String showProfile(Principal principal, Model model) {
+
+    if(principal == null || principal.getName() == null) {
+      return "redirect:/member/login";
+    }
+
     Member loginedMember = memberService.getMemberByUsername(principal.getName());
 
     model.addAttribute("loginedMember", loginedMember);
