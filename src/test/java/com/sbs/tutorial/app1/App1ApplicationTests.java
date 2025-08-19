@@ -2,21 +2,28 @@ package com.sbs.tutorial.app1;
 
 import com.sbs.tutorial.app1.boudedContext.app.home.controller.HomeController;
 import com.sbs.tutorial.app1.boudedContext.app.member.controller.MemberController;
+import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URL;
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -91,16 +98,52 @@ class App1ApplicationTests {
 
   @Test
   @DisplayName("회원가입")
+  @Rollback(false)
   void t05() throws Exception {
-    // 과제(제출) : 월요일 저녁 10:00 시까지 제출
-    // 강사 이메일(수업페이지 참고)
-    
     // 파일 다운로드 수행(실제 이미지 url 업로드 / Lorem Picsum 이용)
-    
+    String imageUrl = "https://picsum.photos/200/300";
+    String originalFileName = "test-image.jpg";
+
+    byte[] imageBytes;
+
+    try {
+      URL url = new URL(imageUrl);
+      imageBytes = url.openStream().readAllBytes();
+      // url.openStream() : 실제로 인터넷에 연결해서 url 데이터의 접근
+      // 이미지 파일의 모든 데이터가 byte[]로 저장
+    } catch (Exception e) {
+      imageBytes = "test image content".getBytes(); // 대체 데이터
+    }
+
+    MockMultipartFile profileImg = new MockMultipartFile(
+        "profileImg",
+        originalFileName,
+        "image/jpeg",
+        imageBytes
+    );
+
     // 회원 가입(MVC MOCK)
+    ResultActions resultActions = mvc.perform(
+        multipart("/member/join")
+            .file(profileImg)
+            .param("username", "user5")
+            .param("password", "1234")
+            .param("email", "user5@test.com")
+            .characterEncoding("UTF-8")
+    ).andDo(print());
+    
+    // 회원 가입 성공시 프로필 페이지로 리다이렉트
+    resultActions.andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl("/member/profile"));
     
     // 5번 회원이 생성, 테스트(생성 된 회원 다운로드한 파일을 프로필에 업로드)
+    long memberCount = memberService.count();
+    assertThat(memberCount).isEqualTo(5);
     
     // DB에 프로필 이미지가 있는지 확인
+    Member newMember = memberService.getMemberByUsername("user5");
+    assertThat(newMember).isNotNull();
+    assertThat(newMember.getUsername()).isEqualTo("user5");
+    assertThat(newMember.getEmail()).isEqualTo("user5@test.com");
   }
 }

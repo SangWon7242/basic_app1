@@ -31,19 +31,25 @@ public class MemberService implements UserDetailsService {
 
   public Member join(String username, String password, String email, MultipartFile profileImg) {
     // 프로필 이미지가 저장될 경로
-    String profileImgRelPath = "member/" + UUID.randomUUID().toString() + ".png";
-    File profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
-    // c:/spring-temp/app1/member/1234.png
+    String profileImgDirName = "member";
+    String fileName = UUID.randomUUID().toString();
+    String fileExt = ".png";
+    String profileImgDirPath = genFileDirPath + "/" + profileImgDirName; // 폴더 경로
+    String profileImgFilePath = profileImgDirPath + "/" + fileName + fileExt; // 파일 경로
 
-    if(!profileImgFile.canExecute()) {
-      profileImgFile.mkdirs();
-    }
+    System.out.println("profileImgDirPath : " + profileImgDirPath);
+    System.out.println("profileImgFilePath : " + profileImgFilePath);
+
+    new File(profileImgDirPath).mkdirs(); // 폴더 생성
 
     try {
-      profileImg.transferTo(profileImgFile);
+      profileImg.transferTo(new File(profileImgFilePath)); // 파일 저장
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    String profileImgRelPath = profileImgDirName + "/" + fileName + fileExt;
+    System.out.println("profileImgRelPath : " + profileImgRelPath);
 
     Member member = Member.builder()
         .username(username)
