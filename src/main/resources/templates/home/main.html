@@ -26,7 +26,21 @@
 
   .top-bar__menu-list {
     display: flex;
+    align-items: center;
     gap: 0 30px;
+  }
+
+  .profile-box {
+    display: flex;
+    gap: 0 10px;
+    align-items: center;
+  }
+
+  .profile-img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
   }
 </style>
 
@@ -42,8 +56,12 @@
         <li sec:authorize="!isAuthenticated()">
           <a href="/member/login">로그인</a>
         </li>
+        <!-- isAuthenticated : 로그인 한 경우 -->
         <li sec:authorize="isAuthenticated()">
-          <span>안녕하세요. <span sec:authentication="name"></span>님!</span>
+          <div class="profile-box">
+            <img class="profile-img" th:src="@{|${loginedMemberProfileImgUrl}|}" alt="프로필 이미지">
+            <span>안녕하세요. <span th:text="${loginedMember.username}"></span>님!</span>
+          </div>
         </li>
         <li sec:authorize="!isAuthenticated()">
           <a href="/member/join">회원가입</a>
