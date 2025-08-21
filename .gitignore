@@ -38,3 +38,5 @@ out/
 
 ### Spring Boot ###
 application-base-addi.yml
+
+spy.log

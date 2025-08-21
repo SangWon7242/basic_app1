@@ -2,11 +2,13 @@ package com.sbs.tutorial.app1.boudedContext.app.member.controller;
 
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
+import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -41,7 +43,7 @@ public class MemberController {
     String passwordClearText = password; // 패스워드 원문
     password = passwordEncoder.encode(password);
 
-    if(oldMember != null) {
+    if (oldMember != null) {
       return "redirect:/?errorMsg=AlreadyExist";
     }
 
@@ -66,7 +68,7 @@ public class MemberController {
   @GetMapping("/profile")
   public String showProfile(Principal principal, Model model) {
 
-    if(principal == null || principal.getName() == null) {
+    if (principal == null || principal.getName() == null) {
       return "redirect:/member/login";
     }
 
@@ -77,4 +79,15 @@ public class MemberController {
     return "member/profile";
   }
 
+  @GetMapping("/principal")
+  @ResponseBody
+  public Principal getPrincipal(Principal principal) {
+    return principal;
+  }
+
+  @GetMapping("/currentUser")
+  @ResponseBody
+  public MemberContext currentUser(@AuthenticationPrincipal MemberContext memberContext) {
+    return memberContext;
+  }
 }

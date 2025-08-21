@@ -2,10 +2,14 @@ package com.sbs.tutorial.app1.boudedContext.app.home.controller;
 
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
+import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
@@ -37,4 +41,5 @@ public class HomeController {
   public String upload() {
     return "home/test/upload";
   }
+
 }
