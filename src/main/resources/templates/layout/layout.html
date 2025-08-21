@@ -77,7 +77,7 @@
           <li sec:authorize="isAuthenticated()">
             <div class="profile-box">
               <img class="profile-img" th:src="@{|${loginedMemberProfileImgUrl}|}" alt="프로필 이미지">
-              <span>안녕하세요. <span th:text="${loginedMember.username}"></span>님!</span>
+              <span>안녕하세요. <span th:text="${#authentication.principal.username}"></span>님!</span>
             </div>
           </li>
           <li sec:authorize="isAuthenticated()">
