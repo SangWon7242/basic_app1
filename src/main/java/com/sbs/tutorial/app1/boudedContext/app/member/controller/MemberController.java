@@ -66,15 +66,8 @@ public class MemberController {
 
   @PreAuthorize("isAuthenticated()") // 로그인 회원만 접속이 가능
   @GetMapping("/profile")
-  public String showProfile(Principal principal, Model model) {
-
-    if (principal == null || principal.getName() == null) {
-      return "redirect:/member/login";
-    }
-
-    Member loginedMember = memberService.getMemberByUsername(principal.getName());
-
-    model.addAttribute("loginedMember", loginedMember);
+  public String showProfile(@AuthenticationPrincipal MemberContext memberContext, Model model) {
+    model.addAttribute("memberContext", memberContext);
 
     return "member/profile";
   }
