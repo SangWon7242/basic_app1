@@ -16,7 +16,7 @@
 
 <section layout:fragment="content">
   <div class="container mx-auto">
-    <img class="profile-img" th:src="${memberContext.profileImgUrl}" alt="프로필 사진">
+    <img class="profile-img" th:src="@{|/member/profile/img/${#authentication.principal.id}|}" alt="프로필 사진">
     <div>아이디 : <span th:text="${memberContext.username}"></span></div>
     <div>이메일 : <span th:text="${memberContext.email}"></span></div>
   </div>

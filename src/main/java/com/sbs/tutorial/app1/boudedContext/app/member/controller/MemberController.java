@@ -13,10 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sound.midi.MetaMessage;
@@ -82,5 +79,10 @@ public class MemberController {
   @ResponseBody
   public MemberContext currentUser(@AuthenticationPrincipal MemberContext memberContext) {
     return memberContext;
+  }
+
+  @GetMapping("/profile/img/{id}")
+  public String showProfileImg(@PathVariable("id") Long id) {
+    return "redirect:" + memberService.getMemberById(id).getProfileImgUrl();
   }
 }
