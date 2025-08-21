@@ -1,4 +1,4 @@
-package com.sbs.tutorial.app1.base;
+package com.sbs.tutorial.app1.boudedContext.app.security;
 
 
 import org.springframework.context.annotation.Bean;

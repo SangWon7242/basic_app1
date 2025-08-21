@@ -19,4 +19,10 @@ public class Member extends BaseEntity {
   private  String password;
   private String email;
   private String profileImg;
+
+  public String getProfileImgUrl() {
+    if (profileImg == null) return null;
+
+    return "/gen/" + profileImg;
+  }
 }
