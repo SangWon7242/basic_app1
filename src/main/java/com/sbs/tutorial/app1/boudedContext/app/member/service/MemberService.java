@@ -30,16 +30,19 @@ public class MemberService implements UserDetailsService {
     return memberRepository.findByUsername(username).orElse(null);
   }
 
+
+
+  public String getCurrentProfileImgDirName() {
+    return "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+  }
+
   public Member join(String username, String password, String email, MultipartFile profileImg) {
     // 프로필 이미지가 저장될 경로
-    String profileImgDirName = "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd"); // 2025_08_21
+    String profileImgDirName = getCurrentProfileImgDirName();
     String ext = Util.file.getExt(profileImg.getOriginalFilename());
     String fileName = UUID.randomUUID().toString() + "." + ext;
     String profileImgDirPath = genFileDirPath + "/" + profileImgDirName; // 폴더 경로
     String profileImgFilePath = profileImgDirPath + "/" + fileName; // 파일 경로
-
-    System.out.println("profileImgDirPath : " + profileImgDirPath);
-    System.out.println("profileImgFilePath : " + profileImgFilePath);
 
     new File(profileImgDirPath).mkdirs(); // 폴더 생성
 
@@ -103,5 +106,13 @@ public class MemberService implements UserDetailsService {
     File file = new File(profileImgPath);
 
     if(file.exists()) file.delete();
+  }
+
+  public void setProfileImgByUrl(Member member, String url) {
+    Member freshMember = memberRepository.findById(member.getId()).orElseThrow();
+
+    String filePath = Util.file.downloadImg(url, genFileDirPath + "/" + getCurrentProfileImgDirName() + "/" + UUID.randomUUID());
+    freshMember.setProfileImg(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
+    memberRepository.save(freshMember);
   }
 }
