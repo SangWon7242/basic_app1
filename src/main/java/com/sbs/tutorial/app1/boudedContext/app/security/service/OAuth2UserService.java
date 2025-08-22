@@ -3,6 +3,7 @@ package com.sbs.tutorial.app1.boudedContext.app.security.service;
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import com.sbs.tutorial.app1.boudedContext.app.member.exception.MemberNotFoundException;
 import com.sbs.tutorial.app1.boudedContext.app.member.repository.MemberRepository;
+import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
 import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
 import com.sbs.tutorial.app1.boudedContext.app.security.exception.OAuthTypeMatchNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService {
   private final MemberRepository memberRepository;
+  private final MemberService memberService;
 
   @Override
   @Transactional
@@ -61,6 +63,8 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
               .build();
 
           memberRepository.save(member);
+
+          memberService.setProfileImgByUrl(member, "https://picsum.photos/200/300");
         }
       }
     } else {
