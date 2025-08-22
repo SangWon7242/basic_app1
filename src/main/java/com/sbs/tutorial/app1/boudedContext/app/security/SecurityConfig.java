@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,7 +29,8 @@ public class SecurityConfig {
             .loginProcessingUrl("/member/login") // POST : 로그인 처리
             .defaultSuccessUrl("/member/profile") // 로그인 성공시 리다이렉트
             .permitAll()
-        ).logout(logout -> logout
+        ).oauth2Login(withDefaults())
+        .logout(logout -> logout
             .logoutUrl("/member/logout") // POST : 로그아웃
             .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트
             .invalidateHttpSession(true) // 세션 삭제
