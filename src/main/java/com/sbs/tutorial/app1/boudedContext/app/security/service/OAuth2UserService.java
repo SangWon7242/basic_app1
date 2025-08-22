@@ -7,6 +7,7 @@ import com.sbs.tutorial.app1.boudedContext.app.member.service.MemberService;
 import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
 import com.sbs.tutorial.app1.boudedContext.app.security.exception.OAuthTypeMatchNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -21,6 +22,7 @@ import java.util.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j // 로깅 기능을 자동으로 생성
 public class OAuth2UserService extends DefaultOAuth2UserService {
   private final MemberRepository memberRepository;
   private final MemberService memberService;
@@ -46,9 +48,13 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     if (isNew(oauthType, oauthId)) {
       switch (oauthType) {
         case "KAKAO" -> {
+          System.out.println("attributes : " + attributes);
+          log.debug("attributes : {}", attributes);
+
           Map attributesProperties = (Map) attributes.get("properties");
           Map attributesKakaoAcount = (Map) attributes.get("kakao_account");
           String nickname = (String) attributesProperties.get("nickname");
+          String profileImg = (String) attributesProperties.get("profile_image");
           String email = "%s@kakao.com".formatted(oauthId);
           String username = "KAKAO_%s".formatted(oauthId);
 
@@ -63,8 +69,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
               .build();
 
           memberRepository.save(member);
-
-          memberService.setProfileImgByUrl(member, "https://picsum.photos/200/300");
+          memberService.setProfileImgByUrl(member, profileImg);
         }
       }
     } else {

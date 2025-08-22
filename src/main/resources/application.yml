@@ -37,4 +37,9 @@ spring:
 custom: # 추가적인 설정
   genFileDirPath: c:/spring-temp/app1 # 파일 생성 경로
 
+logging:
+  level:
+    root: info
+    com.sbs.tutorial.app1: debug
+
 
