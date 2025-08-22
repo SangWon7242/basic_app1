@@ -1,6 +1,8 @@
 package com.sbs.tutorial.app1.boudedContext.app.security;
 
 
+import com.sbs.tutorial.app1.boudedContext.app.security.service.OAuth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,11 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+  @Autowired
+  private OAuth2UserService oAuth2UserService;
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
@@ -29,7 +32,13 @@ public class SecurityConfig {
             .loginProcessingUrl("/member/login") // POST : 로그인 처리
             .defaultSuccessUrl("/member/profile") // 로그인 성공시 리다이렉트
             .permitAll()
-        ).oauth2Login(withDefaults())
+        ).oauth2Login(oauth2 -> oauth2
+            .loginPage("/member/login") // GET : 로그인 페이지
+            .defaultSuccessUrl("/member/profile") // 로그인 성공시 리다이렉트
+            .userInfoEndpoint(userInfo -> userInfo
+                .userService(oAuth2UserService)
+            )
+        )
         .logout(logout -> logout
             .logoutUrl("/member/logout") // POST : 로그아웃
             .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트
