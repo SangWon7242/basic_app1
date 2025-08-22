@@ -33,6 +33,13 @@ public class MemberController {
   private final MemberService memberService;
   private final PasswordEncoder passwordEncoder;
 
+  @PreAuthorize("isAuthenticated()") // 로그인 하지 않은 회원만 접속 가능
+  @GetMapping("/modify")
+  public String showModify() {
+    return "member/modify";
+  }
+
+
   @PreAuthorize("isAnonymous()") // 로그인 하지 않은 회원만 접속 가능
   @GetMapping("/join")
   public String showJoin() {

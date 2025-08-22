@@ -1,0 +1,50 @@
+<!doctype html>
+<html layout:decorate="~{layout/layout.html}">
+<head>
+  <title>회원정보 수정</title>
+</head>
+<body>
+<script>
+  function ModifyForm__submit(form) {
+    form.email.value = form.email.value.trim();
+    if(form.email.value.length === 0) {
+      alert('이메일를 입력해주세요.');
+      form.email.focus();
+      return;
+    }
+
+    form.submit();
+  }
+</script>
+
+<section layout:fragment="content">
+  <div class="container mx-auto">
+    <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
+      <div>
+        <span>아이디</span>
+        <span th:text="${#authentication.principal.username}"></span>
+      </div>
+      <div>
+        <span>이메일</span>
+        <span th:text="${#authentication.principal.email}"></span>
+      </div>
+      <div>
+        <div>
+          <span>기존 프로필 이미지</span>
+          <img class="profile-img" th:src="@{|/member/profile/img/${#authentication.principal.id}|}" alt="프로필 사진">
+        </div>
+      </div>
+      <div>
+        <div>
+          <span>프로필 이미지 업로드</span>
+        </div>
+        <input type="file" name="profileImg" accept="image/png, image/jpeg, image/jpg, image/gif">
+      </div>
+      <div>
+        <input type="submit" value="수정">
+      </div>
+    </form>
+  </div>
+</section>
+</body>
+</html>
