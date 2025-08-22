@@ -7,6 +7,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sound.midi.MetaMessage;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequiredArgsConstructor
@@ -79,8 +86,17 @@ public class MemberController {
     return memberContext;
   }
 
+//  @GetMapping("/profile/img/{id}")
+//  public String showProfileImgOrigin(@PathVariable("id") Long id) {
+//    return "redirect:" + memberService.getMemberById(id).getProfileImgUrl();
+//  }
+
   @GetMapping("/profile/img/{id}")
-  public String showProfileImg(@PathVariable("id") Long id) {
-    return "redirect:" + memberService.getMemberById(id).getProfileImgUrl();
+  public ResponseEntity<Object> showProfileImg(@PathVariable Long id) throws URISyntaxException {
+    URI redirectUri = new URI(memberService.getMemberById(id).getProfileImgUrl());
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setLocation(redirectUri);
+    httpHeaders.setCacheControl(CacheControl.maxAge(60 * 60 * 1, TimeUnit.SECONDS));
+    return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
   }
 }
