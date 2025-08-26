@@ -41,8 +41,12 @@ public class MemberController {
 
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/modify")
-  public String modify(@AuthenticationPrincipal MemberContext memberContext, String email, MultipartFile profileImg) {
+  public String modify(@AuthenticationPrincipal MemberContext memberContext, String email, String profileImgDelete, MultipartFile profileImg) {
     Member member = memberService.getMemberById(memberContext.getId());
+
+    if(profileImgDelete != null && profileImgDelete.equals("Y")) {
+      memberService.removeProfileImg(member);
+    }
 
     memberService.modify(member, email, profileImg);
 
