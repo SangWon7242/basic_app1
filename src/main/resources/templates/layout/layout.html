@@ -89,6 +89,9 @@
             <a href="/member/join">회원가입</a>
           </li>
           <li sec:authorize="isAuthenticated()">
+            <a href="/article/write">글작성</a>
+          </li>
+          <li sec:authorize="isAuthenticated()">
             <a href="/member/profile">마이페이지</a>
           </li>
         </ul>

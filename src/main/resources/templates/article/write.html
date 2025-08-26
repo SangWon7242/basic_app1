@@ -1,0 +1,59 @@
+<!doctype html>
+<html layout:decorate="~{layout/layout.html}">
+<head>
+  <title>글 작성</title>
+</head>
+<body>
+<script>
+  function WriteForm__submit(form) {
+    form.title.value = form.title.value.trim();
+    if(form.username.title.length === 0) {
+      alert('제목을 입력해주세요.');
+      form.title.focus();
+      return;
+    }
+
+    form.content.value = form.content.value.trim();
+    if(form.content.value.length === 0) {
+      alert('내용을 입력해주세요.');
+      form.content.focus();
+      return;
+    }
+
+    form.submit();
+  }
+</script>
+
+<section layout:fragment="content">
+  <div class="container mx-auto">
+    <form th:action method="POST" enctype="multipart/form-data" onsubmit="WriteForm__submit(this); return false;">
+      <div>
+        <span>제목</span>
+        <input type="text" name="title">
+      </div>
+      <div>
+        <span>내용</span>
+        <textarea name="content"></textarea>
+      </div>
+      <div>
+        <div>
+          <span>본문 이미지</span>
+        </div>
+        <div>
+          <input type="file" name="contentImg__1" accept="image/png, image/jpeg, image/jpg, image/gif">
+        </div>
+        <div>
+          <input type="file" name="contentImg__2" accept="image/png, image/jpeg, image/jpg, image/gif">
+        </div>
+        <div>
+          <button type="button">이미지 더 첨부하기</button>
+        </div>
+      </div>
+      <div>
+        <input type="submit" value="작성">
+      </div>
+    </form>
+  </div>
+</section>
+</body>
+</html>
