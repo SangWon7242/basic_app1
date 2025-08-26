@@ -107,11 +107,6 @@ public class MemberController {
     return memberContext;
   }
 
-//  @GetMapping("/profile/img/{id}")
-//  public String showProfileImgOrigin(@PathVariable("id") Long id) {
-//    return "redirect:" + memberService.getMemberById(id).getProfileImgUrl();
-//  }
-
   @GetMapping("/profile/img/{id}")
   public ResponseEntity<Object> showProfileImg(@PathVariable Long id) throws URISyntaxException {
     String profileImgUrl = memberService.getMemberById(id).getProfileImgUrl();

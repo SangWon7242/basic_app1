@@ -6,10 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -53,5 +50,9 @@ public class MemberContext extends User implements OAuth2User {
   @Override
   public String getName() {
     return this.getAttribute(this.userNameAttributeName).toString();
+  }
+
+  public String profileImgRedirectUrl() {
+    return "/member/profile/img/" + getId() + "?random=" + UUID.randomUUID();
   }
 }
