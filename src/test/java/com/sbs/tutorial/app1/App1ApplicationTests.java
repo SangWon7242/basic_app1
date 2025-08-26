@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,7 +55,7 @@ class App1ApplicationTests {
         .andExpect(handler().handlerType(HomeController.class))
         .andExpect(handler().methodName("main"))
         .andExpect(view().name("home/main"))
-        .andExpect(content().string(containsString("안녕"))); // <div>안녕</div>
+        .andExpect(content().string(containsString("스프링부트")));
   }
 
   @Test
@@ -66,11 +67,11 @@ class App1ApplicationTests {
 
   @Test
   @DisplayName("user1로 로그인 후 프로필 페이지에 접속하면 user1의 이메일이 보여야 한다.")
+  @WithUserDetails("user1")
   void t03() throws Exception {
     // WHEN
     ResultActions resultActions = mvc.perform(
         get("/member/profile")
-            .with(user("user1").password("1234").roles("user"))
         ).andDo(print());
 
     // THEN
@@ -82,11 +83,11 @@ class App1ApplicationTests {
 
   @Test
   @DisplayName("user4로 로그인 후 프로필 페이지에 접속하면 user4의 이메일이 보여야 한다.")
+  @WithUserDetails("user4")
   void t04() throws Exception {
 // WHEN
     ResultActions resultActions = mvc.perform(
         get("/member/profile")
-            .with(user("user4").password("1234").roles("user"))
     ).andDo(print());
 
     // THEN
