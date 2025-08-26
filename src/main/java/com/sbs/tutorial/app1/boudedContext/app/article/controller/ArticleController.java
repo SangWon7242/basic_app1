@@ -3,6 +3,7 @@ package com.sbs.tutorial.app1.boudedContext.app.article.controller;
 import com.sbs.tutorial.app1.boudedContext.app.article.entity.Article;
 import com.sbs.tutorial.app1.boudedContext.app.article.input.ArticleForm;
 import com.sbs.tutorial.app1.boudedContext.app.article.service.ArticleService;
+import com.sbs.tutorial.app1.boudedContext.app.fileUpload.service.GenFileService;
 import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.Map;
 @Slf4j
 public class ArticleController {
   private final ArticleService articleService;
+  private final GenFileService genFileService;
 
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/write")
@@ -49,6 +51,8 @@ public class ArticleController {
     log.debug("fileMap : {}", fileMap);
 
     Article article = articleService.write(memberContext.getId(), articleForm.getTitle(), articleForm.getContent());
+
+    genFileService.saveFiles(article, fileMap);
 
     return "작성중";
   }

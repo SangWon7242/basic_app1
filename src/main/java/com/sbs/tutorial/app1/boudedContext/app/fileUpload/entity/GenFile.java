@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class GenFile extends BaseEntity {
   private String relTypeCode;
-  private int relId;
+  private Long relId;
   private String typeCode;
   private String type2Code;
   private String fileExtTypeCode;

@@ -44,7 +44,7 @@ public class QGenFile extends EntityPathBase<GenFile> {
 
     public final StringPath originFileName = createString("originFileName");
 
-    public final NumberPath<Integer> relId = createNumber("relId", Integer.class);
+    public final NumberPath<Long> relId = createNumber("relId", Long.class);
 
     public final StringPath relTypeCode = createString("relTypeCode");
 
