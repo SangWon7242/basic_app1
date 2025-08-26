@@ -32,16 +32,18 @@
         <div>
           <span>기존 프로필 이미지</span>
           <img class="profile-img" th:src="@{|/member/profile/img/${#authentication.principal.id}|}" alt="프로필 사진">
+          <label>
+            <span>삭제</span>
+            <input type="checkbox" name="profileImgDelete" value="Y">
+          </label>
         </div>
-      </div>
-      <div>
         <div>
           <span>프로필 이미지 업로드</span>
+          <input type="file" name="profileImg" accept="image/png, image/jpeg, image/jpg, image/gif">
         </div>
-        <input type="file" name="profileImg" accept="image/png, image/jpeg, image/jpg, image/gif">
-      </div>
-      <div>
-        <input type="submit" value="수정">
+        <div>
+          <input type="submit" value="수정">
+        </div>
       </div>
     </form>
   </div>

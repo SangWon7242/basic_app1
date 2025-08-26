@@ -33,10 +33,20 @@ public class MemberController {
   private final MemberService memberService;
   private final PasswordEncoder passwordEncoder;
 
-  @PreAuthorize("isAuthenticated()") // 로그인 하지 않은 회원만 접속 가능
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/modify")
   public String showModify() {
     return "member/modify";
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/modify")
+  public String modify(@AuthenticationPrincipal MemberContext memberContext, String email, MultipartFile profileImg) {
+    Member member = memberService.getMemberById(memberContext.getId());
+
+    memberService.modify(member, email, profileImg);
+
+    return "redirect:/member/profile";
   }
 
 

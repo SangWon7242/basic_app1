@@ -36,7 +36,7 @@ public class MemberService {
     return "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
   }
 
-  public Member join(String username, String password, String email, MultipartFile profileImg) {
+  private String saveProfileImg(MultipartFile profileImg) {
     // 프로필 이미지가 저장될 경로
     String profileImgDirName = getCurrentProfileImgDirName();
     String ext = Util.file.getExt(profileImg.getOriginalFilename());
@@ -52,8 +52,11 @@ public class MemberService {
       e.printStackTrace();
     }
 
-    String profileImgRelPath = profileImgDirName + "/" + fileName;
-    System.out.println("profileImgRelPath : " + profileImgRelPath);
+    return profileImgDirName + "/" + fileName;
+  }
+
+  public Member join(String username, String password, String email, MultipartFile profileImg) {
+    String profileImgRelPath = saveProfileImg(profileImg);
 
     Member member = Member.builder()
         .username(username)
@@ -101,5 +104,15 @@ public class MemberService {
     String filePath = Util.file.downloadImg(url, genFileDirPath + "/" + getCurrentProfileImgDirName() + "/" + UUID.randomUUID());
     freshMember.setProfileImg(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
     memberRepository.save(freshMember);
+  }
+
+  public void modify(Member member, String email, MultipartFile profileImg) {
+    removeProfileImg(member); // 기본 프로필 이미지 제거
+
+    String profileImgRelPath = saveProfileImg(profileImg);
+
+    member.setEmail(email);
+    member.setProfileImg(profileImgRelPath);
+    memberRepository.save(member);
   }
 }
