@@ -2,18 +2,22 @@ package com.sbs.tutorial.app1.boudedContext.app.security.dto;
 
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
 public class MemberContext extends User implements OAuth2User {
   private final Long id;
-  private final String profileImgUrl;
   private final String email;
+  @Setter
+  private LocalDateTime modifyDate;
+  private final String profileImgUrl;
   private Map<String, Object> attributes;
   private String userNameAttributeName;
 
@@ -21,6 +25,7 @@ public class MemberContext extends User implements OAuth2User {
     super(member.getUsername(), member.getPassword(), authorities);
     this.id = member.getId();
     this.email = member.getEmail();
+    this.modifyDate = member.getModifyDate();
     this.profileImgUrl = member.getProfileImgUrl();
   }
 
@@ -53,6 +58,6 @@ public class MemberContext extends User implements OAuth2User {
   }
 
   public String profileImgRedirectUrl() {
-    return "/member/profile/img/" + getId() + "?random=" + UUID.randomUUID();
+    return "/member/profile/img/" + getId() + "?cacheKey=" + getModifyDate().toString();
   }
 }

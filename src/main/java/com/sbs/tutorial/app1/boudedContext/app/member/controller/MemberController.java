@@ -12,7 +12,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -49,6 +52,19 @@ public class MemberController {
     }
 
     memberService.modify(member, profileImg);
+
+    memberContext.setModifyDate(member.getModifyDate());
+
+    // 세션 정보 갱신: SecurityContext의 Authentication 객체 업데이트
+    // 새로운 Authentication 객체 생성 (기존 권한 정보 유지)
+    Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+        memberContext,
+        memberContext.getPassword(),
+        memberContext.getAuthorities()
+    );
+
+    // SecurityContext에 새로운 Authentication 설정
+    SecurityContextHolder.getContext().setAuthentication(newAuthentication);
 
     return "redirect:/member/profile";
   }
