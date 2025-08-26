@@ -16,9 +16,13 @@ import lombok.experimental.SuperBuilder;
 public class Member extends BaseEntity {
   @Column(unique = true)
   private String username;
-  private  String password;
+  private String password;
   private String email;
   private String profileImg;
+
+  public Member(Long id) {
+    super(id);
+  }
 
   public String getProfileImgUrl() {
     if (profileImg == null) return null;

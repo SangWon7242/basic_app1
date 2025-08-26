@@ -31,4 +31,8 @@ public class BaseEntity {
   private LocalDateTime createDate; // LocalDateTime.NOW() 가 알아서 들어감
   @LastModifiedDate
   private LocalDateTime modifyDate;
+
+  public BaseEntity(Long id) {
+    this.id = id;
+  }
 }
