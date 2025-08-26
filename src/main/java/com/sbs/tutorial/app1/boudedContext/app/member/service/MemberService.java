@@ -106,13 +106,20 @@ public class MemberService {
     memberRepository.save(freshMember);
   }
 
-  public void modify(Member member, String email, MultipartFile profileImg) {
-    removeProfileImg(member); // 기본 프로필 이미지 제거
+  public void modify(Member member, MultipartFile profileImg) {
 
-    String profileImgRelPath = saveProfileImg(profileImg);
+    if(profileImg != null && !profileImg.isEmpty()) {
+      removeProfileImg(member);
+      String profileImgRelPath = saveProfileImg(profileImg);
+      member.setProfileImg(profileImgRelPath);
+    };
 
-    member.setEmail(email);
-    member.setProfileImg(profileImgRelPath);
+    memberRepository.save(member);
+  }
+
+  public void deleteProfileImg(Member member) {
+    removeProfileImg(member); // 로컬에서 프로필 이미지 제거
+    member.setProfileImg(null); // DB에서 프로필 이미지 제거
     memberRepository.save(member);
   }
 }

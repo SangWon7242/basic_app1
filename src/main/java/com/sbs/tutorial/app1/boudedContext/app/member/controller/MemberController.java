@@ -41,14 +41,14 @@ public class MemberController {
 
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/modify")
-  public String modify(@AuthenticationPrincipal MemberContext memberContext, String email, String profileImgDelete, MultipartFile profileImg) {
+  public String modify(@AuthenticationPrincipal MemberContext memberContext, String profileImgDelete, MultipartFile profileImg) {
     Member member = memberService.getMemberById(memberContext.getId());
 
     if(profileImgDelete != null && profileImgDelete.equals("Y")) {
-      memberService.removeProfileImg(member);
+      memberService.deleteProfileImg(member);
     }
 
-    memberService.modify(member, email, profileImg);
+    memberService.modify(member, profileImg);
 
     return "redirect:/member/profile";
   }
