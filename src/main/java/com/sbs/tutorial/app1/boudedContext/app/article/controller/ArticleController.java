@@ -65,7 +65,7 @@ public class ArticleController {
 
   @GetMapping("/{id}")
   public String showDetail(Model model, @PathVariable Long id) {
-    Article article = articleService.getArticleById(id);
+    Article article = articleService.getForPrintArticleById(id);
 
     if(article == null) {
       return "redirect:/";
