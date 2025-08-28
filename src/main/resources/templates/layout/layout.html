@@ -12,6 +12,9 @@
 
   <!-- 제이쿼리 불러오기 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- sweetalert2 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <style>
@@ -111,5 +114,18 @@
     </div>
   </footer>
 </div>
+
+
+<!-- 공통 js 연결 -->
+<script src="/resource/common/common.js"></script>
+
+<script th:inline="javascript">
+  const params = /*[[ ${param} ]]*/ null;
+
+  if(params && params.msg) {
+    successAlert(params.msg);
+  }
+</script>
+
 </body>
 </html>
