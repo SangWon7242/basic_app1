@@ -54,6 +54,8 @@ public class QGenFile extends EntityPathBase<GenFile> {
 
     public final StringPath typeCode = createString("typeCode");
 
+    public final StringPath url = createString("url");
+
     public QGenFile(String variable) {
         super(GenFile.class, forVariable(variable));
     }
