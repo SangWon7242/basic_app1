@@ -1,8 +1,10 @@
 package com.sbs.tutorial.app1.boudedContext.app.article.controller;
 
+import com.sbs.tutorial.app1.base.dto.RsData;
 import com.sbs.tutorial.app1.boudedContext.app.article.entity.Article;
 import com.sbs.tutorial.app1.boudedContext.app.article.input.ArticleForm;
 import com.sbs.tutorial.app1.boudedContext.app.article.service.ArticleService;
+import com.sbs.tutorial.app1.boudedContext.app.fileUpload.entity.GenFile;
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.service.GenFileService;
 import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
 import jakarta.validation.Valid;
@@ -48,11 +50,11 @@ public class ArticleController {
 
     Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
-    log.debug("fileMap : {}", fileMap);
-
     Article article = articleService.write(memberContext.getId(), articleForm.getTitle(), articleForm.getContent());
 
-    genFileService.saveFiles(article, fileMap);
+    RsData<Map<String, GenFile>> saveFilesFileRsData  = genFileService.saveFiles(article, fileMap);
+
+    log.debug("saveFilesFileRsData : {}", saveFilesFileRsData);
 
     return "작성중";
   }
