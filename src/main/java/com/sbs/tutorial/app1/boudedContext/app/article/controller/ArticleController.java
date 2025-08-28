@@ -7,20 +7,21 @@ import com.sbs.tutorial.app1.boudedContext.app.article.service.ArticleService;
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.entity.GenFile;
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.service.GenFileService;
 import com.sbs.tutorial.app1.boudedContext.app.security.dto.MemberContext;
+import com.sbs.tutorial.app1.util.Util.Util;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Controller
@@ -39,12 +40,11 @@ public class ArticleController {
 
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/write")
-  @ResponseBody
   public String write(@AuthenticationPrincipal MemberContext memberContext,
                       @Valid ArticleForm articleForm,
                       MultipartRequest multipartRequest,
                       BindingResult bindingResult) {
-    if(bindingResult.hasErrors()) {
+    if (bindingResult.hasErrors()) {
       return "article/write";
     }
 
@@ -52,10 +52,25 @@ public class ArticleController {
 
     Article article = articleService.write(memberContext.getId(), articleForm.getTitle(), articleForm.getContent());
 
-    RsData<Map<String, GenFile>> saveFilesFileRsData  = genFileService.saveFiles(article, fileMap);
+    RsData<Map<String, GenFile>> saveFilesFileRsData = genFileService.saveFiles(article, fileMap);
 
     log.debug("saveFilesFileRsData : {}", saveFilesFileRsData);
 
-    return "작성중";
+    String msg = "%d번 게시물이 작성되었습니다.".formatted(article.getId());
+    msg = Util.url.encode(msg); // 인코딩 처리;
+
+    return "redirect:/article/%d?msg=%s".formatted(article.getId(), msg);
+  }
+
+  @GetMapping("/{id}")
+  public String showDetail(Model model, @PathVariable Long id) {
+    Article article = articleService.getArticleById(id);
+
+    if(article == null) {
+      return "redirect:/";
+    }
+
+    model.addAttribute("article", article);
+    return "article/detail";
   }
 }
