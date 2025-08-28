@@ -7,7 +7,21 @@
 
 <section layout:fragment="content">
   <div class="container mx-auto">
-    [[${article}]]
+    <div>
+      작성일 : [[${article.createDate}]]
+    </div>
+    <div>
+      수정일 : [[${article.modifyDate}]]
+    </div>
+    <div>
+      작성자 : [[${article.author.username}]]
+    </div>
+    <div>
+      제목 : [[${article.title}]]
+    </div>
+    <div>
+      내용 : [[${article.content}]]
+    </div>
   </div>
 </section>
 </body>

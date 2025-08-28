@@ -16,10 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -74,5 +71,11 @@ public class ArticleController {
     model.addAttribute("article", article);
 
     return "article/detail";
+  }
+
+  @GetMapping("/{id}/json/forDebug")
+  @ResponseBody
+  public Article showDetail(@PathVariable Long id) {
+    return articleService.getForPrintArticleById(id);
   }
 }

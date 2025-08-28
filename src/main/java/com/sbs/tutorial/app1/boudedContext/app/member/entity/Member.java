@@ -1,5 +1,6 @@
 package com.sbs.tutorial.app1.boudedContext.app.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sbs.tutorial.app1.base.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +17,8 @@ import lombok.experimental.SuperBuilder;
 public class Member extends BaseEntity {
   @Column(unique = true)
   private String username;
+
+  @JsonIgnore
   private String password;
   private String email;
   private String profileImg;

@@ -2,10 +2,13 @@ package com.sbs.tutorial.app1.boudedContext.app.article.service;
 
 import com.sbs.tutorial.app1.boudedContext.app.article.entity.Article;
 import com.sbs.tutorial.app1.boudedContext.app.article.repository.ArticleRepository;
+import com.sbs.tutorial.app1.boudedContext.app.fileUpload.entity.GenFile;
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.service.GenFileService;
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +44,9 @@ public class ArticleService {
   public Article getForPrintArticleById(Long id) {
     Article article = getArticleById(id);
 
-    article.getExtra().put("age", 22);
+    Map<String, GenFile> genFileMap = genFileService.getRelGenFileMap(article);
+
+    article.getExtra().put("genFileMap", genFileMap);
 
     return article;
   }
