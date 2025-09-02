@@ -39,12 +39,12 @@
         <div>
           <span>본문 이미지</span>
         </div>
-        <div>
-          <input type="file" name="common__contentImg__1" accept="image/png, image/jpeg, image/jpg, image/gif">
-        </div>
-        <div>
-          <input type="file" name="common__contentImg__2" accept="image/png, image/jpeg, image/jpg, image/gif">
-        </div>
+        <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+          <div>
+            <span th:text="|${i}번 이미지|"></span>
+            <input type="file" th:name="|common\_\_contentImg\_\_${i}|" accept="image/png, image/jpeg, image/jpg, image/gif">
+          </div>
+        </th:block>
         <div>
           <button type="button">이미지 더 첨부하기</button>
         </div>

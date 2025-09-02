@@ -39,12 +39,26 @@
         <div>
           <span>본문 이미지</span>
         </div>
-        <div>
-          <input type="file" name="common__contentImg__1" accept="image/png, image/jpeg, image/jpg, image/gif">
-        </div>
-        <div>
-          <input type="file" name="common__contentImg__2" accept="image/png, image/jpeg, image/jpg, image/gif">
-        </div>
+        <th:block th:each="i : ${#numbers.sequence(1, 5)}" th:with="genFile=${article.extra.genFileMap.get('common\_\_contentImg\_\_' + i)}">
+          <div>
+            <th:block th:if="${genFile != null}">
+              <hr>
+              <span th:text="|${i}번 이미지|"></span>
+              <div>
+                <a th:href="${genFile.url}" target="_blank">
+                  <img class="w-20 h-20 object-cover rounded" title="새창에서 크게 보기" th:src="${genFile.url}" alt="상세 이미지">
+                </a>
+                <label>
+                  <input type="checkbox" value="" th:name="|delete\_\_common\_\_contentImg\_\_${i}|">
+                  <span>이미지 삭제</span>
+                </label>
+              </div>
+              <div>
+                <input type="file" th:name="|common\_\_contentImg\_\_${i}|" accept="image/png, image/jpeg, image/jpg, image/gif">
+              </div>
+            </th:block>
+          </div>
+        </th:block>
         <div>
           <button type="button">이미지 더 첨부하기</button>
         </div>

@@ -31,8 +31,8 @@ public class DevDataInit {
       articleService.addGenFileByUrl(article1, "common", "contentImg", 4, "https://picsum.photos/200/300");
 
       Article article2 = articleService.write(member2, "제목2", "내용2");
-      articleService.addGenFileByUrl(article1, "common", "contentImg", 1, "https://picsum.photos/200/300");
-      articleService.addGenFileByUrl(article1, "common", "contentImg", 2, "https://picsum.photos/200/300");
+      articleService.addGenFileByUrl(article2, "common", "contentImg", 1, "https://picsum.photos/200/300");
+      articleService.addGenFileByUrl(article2, "common", "contentImg", 2, "https://picsum.photos/200/300");
     };
   }
 }
