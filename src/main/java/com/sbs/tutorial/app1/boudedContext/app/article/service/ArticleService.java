@@ -5,6 +5,7 @@ import com.sbs.tutorial.app1.boudedContext.app.article.repository.ArticleReposit
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.entity.GenFile;
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.service.GenFileService;
 import com.sbs.tutorial.app1.boudedContext.app.member.entity.Member;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,11 @@ public class ArticleService {
     article.getExtra().put("genFileMap", genFileMap);
 
     return article;
+  }
+
+  public void modify(Article article, String title, String content) {
+    article.setTitle(title);
+    article.setContent(content);
+    articleRepository.save(article);
   }
 }

@@ -25,6 +25,10 @@
     <div th:each="entry : ${article.extra.genFileMap}">
       <img th:src="${entry.value.url}" alt="상세 이미지">
     </div>
+
+    <div>
+      <a th:href="@{|/article/${article.id}/modify|}">수정</a>
+    </div>
   </div>
 </section>
 </body>

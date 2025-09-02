@@ -66,7 +66,7 @@ public class ArticleController {
   public String showDetail(Model model, @PathVariable Long id) {
     Article article = articleService.getForPrintArticleById(id);
 
-    if(article == null) {
+    if (article == null) {
       return "redirect:/";
     }
 
@@ -85,15 +85,43 @@ public class ArticleController {
   @GetMapping("/{id}/modify")
   public String showModify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id) {
     Article article = articleService.getForPrintArticleById(id);
-  
-    
+
     // 권한에 대한 접근이 없는 경우
-    if(memberContext.getId() != article.getAuthor().getId()) {
+    if (memberContext.getId() != article.getAuthor().getId()) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
     }
 
     model.addAttribute("article", article);
 
     return "article/modify";
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/{id}/modify")
+  public String modify(
+      @AuthenticationPrincipal MemberContext memberContext,
+      Model model,
+      @PathVariable Long id,
+      @Valid ArticleForm articleForm,
+      BindingResult bindingResult) {
+
+    Article article = articleService.getForPrintArticleById(id);
+
+    // 권한에 대한 접근이 없는 경우
+    if (memberContext.getId() != article.getAuthor().getId()) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
+    }
+
+    if(bindingResult.hasErrors()) {
+      model.addAttribute("article", article);
+      return "article/modify"; // 에러가 발생하면 수정 폼으로 돌아감
+    }
+
+    articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
+
+    String msg = "%d번 게시물이 수정되었습니다.".formatted(article.getId());
+    msg = Util.url.encode(msg);
+
+    return "redirect:/article/%d?msg=%s".formatted(article.getId(), msg);
   }
 }
