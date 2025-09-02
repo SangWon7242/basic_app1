@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://172.17.0.1:3306/app1_prod?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: sbsstlocal
+    password: sbs123414
+  jpa:
+    hibernate:
+      ddl-auto: none
+logging:
+  level:
+    com.sbs.tutorial.app1: info
+custom:
+  genFileDirPath: /gen
