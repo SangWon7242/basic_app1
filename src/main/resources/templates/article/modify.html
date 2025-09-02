@@ -1,11 +1,11 @@
 <!doctype html>
 <html layout:decorate="~{layout/layout.html}">
 <head>
-  <title>글 작성</title>
+  <title>글 수정</title>
 </head>
 <body>
 <script>
-  function WriteForm__submit(form) {
+  function ModifyForm__submit(form) {
     form.title.value = form.title.value.trim();
     if(form.title.value.length === 0) {
       alert('제목을 입력해주세요.');
@@ -26,14 +26,14 @@
 
 <section layout:fragment="content">
   <div class="container mx-auto">
-    <form th:action method="POST" enctype="multipart/form-data" onsubmit="WriteForm__submit(this); return false;">
+    <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
       <div>
         <span>제목</span>
-        <input type="text" name="title">
+        <input type="text" name="title" th:value="${article.title}">
       </div>
       <div>
         <span>내용</span>
-        <textarea name="content"></textarea>
+        <textarea name="content" th:text="${article.content}"></textarea>
       </div>
       <div>
         <div>

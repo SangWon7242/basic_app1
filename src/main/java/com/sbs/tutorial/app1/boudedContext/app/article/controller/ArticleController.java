@@ -11,6 +11,7 @@ import com.sbs.tutorial.app1.util.Util.Util;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -77,5 +79,21 @@ public class ArticleController {
   @ResponseBody
   public Article showDetail(@PathVariable Long id) {
     return articleService.getForPrintArticleById(id);
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/{id}/modify")
+  public String showModify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id) {
+    Article article = articleService.getForPrintArticleById(id);
+  
+    
+    // 권한에 대한 접근이 없는 경우
+    if(memberContext.getId() != article.getAuthor().getId()) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.");
+    }
+
+    model.addAttribute("article", article);
+
+    return "article/modify";
   }
 }
