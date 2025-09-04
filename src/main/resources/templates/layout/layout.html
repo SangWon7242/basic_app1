@@ -124,6 +124,10 @@
 
   if(params && params.msg) {
     successAlert(params.msg);
+
+    const url = new URL(window.location)
+    url.searchParams.delete('msg');
+    window.history.replaceState({}, document.title, url.pathname + url.search);
   }
 </script>
 
