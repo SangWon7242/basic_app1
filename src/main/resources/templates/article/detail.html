@@ -7,21 +7,12 @@
 
 <section layout:fragment="content">
   <div class="container mx-auto">
-    <div>
-      작성일 : [[${article.createDate}]]
-    </div>
-    <div>
-      수정일 : [[${article.modifyDate}]]
-    </div>
-    <div>
-      작성자 : [[${article.author.username}]]
-    </div>
-    <div>
-      제목 : [[${article.title}]]
-    </div>
-    <div>
-      내용 : [[${article.content}]]
-    </div>
+    <div th:text="@{|작성일 : ${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm')}|}"></div>
+    <div th:text="@{|수정일 : ${#temporals.format(article.modifyDate, 'yyyy-MM-dd HH:mm')}|}"></div>
+    <div th:text="@{|작성자 : ${article.author.username}|}"></div>
+    <div th:text="@{|제목 : ${article.title}|}"></div>
+    <div th:text="@{|내용 : ${article.content}|}"></div>
+
     <div th:each="entry : ${article.extra.genFileMap}">
       <img th:src="${entry.value.url}" alt="상세 이미지">
     </div>

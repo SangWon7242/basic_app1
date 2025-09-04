@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -73,6 +74,15 @@ public class ArticleController {
     model.addAttribute("article", article);
 
     return "article/detail";
+  }
+
+  @GetMapping("/list")
+  public String showList(Model model) {
+    List<Article> articles = articleService.getArticles();
+
+    model.addAttribute("articles", articles);
+
+    return "article/list";
   }
 
   @GetMapping("/{id}/json/forDebug")

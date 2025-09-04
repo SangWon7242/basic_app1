@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -56,5 +57,9 @@ public class ArticleService {
     article.setTitle(title);
     article.setContent(content);
     articleRepository.save(article);
+  }
+
+  public List<Article> getArticles() {
+    return articleRepository.findAll();
   }
 }
