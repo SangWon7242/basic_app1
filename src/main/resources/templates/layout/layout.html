@@ -132,6 +132,14 @@
     url.searchParams.delete('msg');
     window.history.replaceState({}, document.title, url.pathname + url.search);
   }
+
+  function deleteArticle() {
+    const msg = "정말 삭제하시겠습니까?";
+
+    confirmModal(msg, function () {
+      document.getElementById("deleteForm").submit();
+    });
+  }
 </script>
 
 </body>

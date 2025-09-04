@@ -18,7 +18,9 @@
     </div>
 
     <div>
-      <a th:href="@{|/article/${article.id}/modify|}">수정</a>
+      <a th:if="${article.author.username == #authentication.principal.username}" th:href="@{|/article/${article.id}/modify|}">수정</a>
+      <a th:if="${article.author.username == #authentication.principal.username}" href="javascript:void(0)" onclick="deleteArticle();" class="cursor-pointer">삭제</a>
+      <form id="deleteForm" th:action="@{|/article/${article.id}/delete|}" method="POST" hidden></form>
     </div>
   </div>
 </section>

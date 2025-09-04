@@ -141,4 +141,23 @@ public class ArticleController {
 
     return "redirect:/article/%d?msg=%s".formatted(article.getId(), msg);
   }
+
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/{id}/delete")
+  public String delete(@AuthenticationPrincipal MemberContext memberContext,
+                           @PathVariable Long id) {
+    Article article = articleService.getForPrintArticleById(id);
+
+    // 권한에 대한 접근이 없는 경우
+    if (memberContext.getId() != article.getAuthor().getId()) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "삭제 권한이 없습니다.");
+    }
+    
+    articleService.delete(article);
+
+    String msg = "%d번 게시물이 삭제되었습니다.".formatted(article.getId());
+    msg = Util.url.encode(msg);
+    
+    return "redirect:/article/list?msg=%s".formatted(msg);
+  }
 }

@@ -62,4 +62,10 @@ public class ArticleService {
   public List<Article> getArticles() {
     return articleRepository.getQslArticlesOrderByIdDesc();
   }
+
+  public void delete(Article article) {
+    genFileService.deleteAllFilesByArticle(article);
+
+    articleRepository.delete(article);
+  }
 }
