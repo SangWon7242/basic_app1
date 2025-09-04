@@ -104,7 +104,8 @@ public class ArticleController {
       @PathVariable Long id,
       @Valid ArticleForm articleForm,
       BindingResult bindingResult,
-      MultipartRequest multipartRequest) {
+      MultipartRequest multipartRequest,
+      @RequestParam Map<String, String> params) {
 
     Article article = articleService.getForPrintArticleById(id);
 
@@ -120,6 +121,7 @@ public class ArticleController {
 
     Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
+    genFileService.deleteFiles(article, params);
     RsData<Map<String, GenFile>> saveFilesFileRsData = genFileService.saveFiles(article, fileMap);
 
     articleService.modify(article, articleForm.getTitle(), articleForm.getContent());

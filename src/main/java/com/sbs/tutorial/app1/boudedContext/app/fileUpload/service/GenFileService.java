@@ -7,6 +7,8 @@ import com.sbs.tutorial.app1.boudedContext.app.fileUpload.entity.GenFile;
 import com.sbs.tutorial.app1.boudedContext.app.fileUpload.repository.GenFileRepository;
 import com.sbs.tutorial.app1.util.Util.Util;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GenFileService {
   private final GenFileRepository genFileRepository;
 
@@ -160,5 +163,42 @@ public class GenFileService {
             (genFile1, genFile2) -> genFile1,
             LinkedHashMap::new
         ));
+  }
+
+  public void deleteFiles(Article article, Map<String, String> params) {
+    List<String> deleteFilesArgs = params.keySet()
+        .stream()
+        .filter(key -> key.startsWith("delete___"))
+        .map(key -> key.replace("delete___", ""))
+        .collect(Collectors.toList());
+
+    log.debug("deleteFilesArgs : {}", deleteFilesArgs);
+
+    deleteFiles(article, deleteFilesArgs);
+  }
+
+  public void deleteFiles(Article article, List<String> params) {
+    String relTypeCode = "article";
+    Long relId = article.getId();
+
+    params.stream()
+        .forEach(key -> {
+          String[] keyBits = key.split("__");
+
+          String typeCode = keyBits[0];
+          String type2Code = keyBits[1];
+          int fileNo = Integer.parseInt(keyBits[2]);
+
+          Optional<GenFile> opGenFile = genFileRepository.findByRelTypeCodeAndRelIdAndTypeCodeAndType2CodeAndFileNo(relTypeCode, relId, typeCode, type2Code, fileNo);
+
+          if(opGenFile.isPresent()) {
+            delete(opGenFile.get());
+          }
+        });
+  }
+
+  private void delete(GenFile genFile) {
+    deleteFileFromStorage(genFile); // 로컬에서 이미지 제거
+    genFileRepository.delete(genFile); // DB에서 이미지 제거
   }
 }
