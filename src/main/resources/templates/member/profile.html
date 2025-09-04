@@ -19,9 +19,9 @@
     <img class="profile-img" th:src="${#authentication.principal.profileImgRedirectUrl}" alt="프로필 사진">
     <div>아이디 : <span th:text="${#authentication.principal.username}"></span></div>
     <div>이메일 : <span th:text="${#authentication.principal.email}"></span></div>
-  </div>
-  <div>
-    <a href="/member/modify">회원정보 수정</a>
+    <div>
+      <a href="/member/modify">회원정보 수정</a>
+    </div>
   </div>
 </section>
 

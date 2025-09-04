@@ -103,7 +103,8 @@ public class ArticleController {
       Model model,
       @PathVariable Long id,
       @Valid ArticleForm articleForm,
-      BindingResult bindingResult) {
+      BindingResult bindingResult,
+      MultipartRequest multipartRequest) {
 
     Article article = articleService.getForPrintArticleById(id);
 
@@ -116,6 +117,10 @@ public class ArticleController {
       model.addAttribute("article", article);
       return "article/modify"; // 에러가 발생하면 수정 폼으로 돌아감
     }
+
+    Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+
+    RsData<Map<String, GenFile>> saveFilesFileRsData = genFileService.saveFiles(article, fileMap);
 
     articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
 
